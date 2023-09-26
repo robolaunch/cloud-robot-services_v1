@@ -1,4 +1,4 @@
-const client = require("./clients/databaseSuperUserClient");
+const client = require("../clients/dbSuperUserClient");
 
 async function creatorFlow() {
   if (!client._connected) {

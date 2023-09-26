@@ -1,9 +1,11 @@
-const db_creator = require("./db_creator");
+const db_creator = require("./functions/dbCreateFlow");
 const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+const appRouters = require("./routes/app.routes");
+const barcodeRouters = require("./routes/barcode.routes");
 
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -18,17 +20,9 @@ app.use(
   })
 );
 
-app.get("/barcode", function (req, res) {
-  db_creator();
+app.use("/", appRouters);
 
-  res.send(200, "test");
-});
-
-app.post("/barcode/index", function (req, res) {
-  db_creator();
-
-  res.send(200, "test");
-});
+app.use("/barcode", barcodeRouters);
 
 var server = app.listen(8084, function () {
   console.log("Server is running on port 8084");
