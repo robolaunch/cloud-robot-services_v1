@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const responseSetter = require("../functions/responseSetter");
 
 router.get("/", (req, res) => {
-  res.status(200).send("Backend is running");
+  responseSetter(
+    res,
+    200,
+    "Backend is running. Please use the API endpoints to access data.",
+    null
+  );
 });
 
 module.exports = router;

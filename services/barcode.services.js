@@ -1,5 +1,5 @@
-const dbCreateFlow = require("../functions/dbCreateFlow");
 const rlClient = require("../clients/dbRobolaunchClient");
+const responseSetter = require("../functions/responseSetter");
 
 async function get(req, res) {
   const selectQuery = "SELECT * FROM barcodes";
@@ -7,19 +7,35 @@ async function get(req, res) {
   try {
     const result = await rlClient.query(selectQuery);
     const data = result.rows;
-    res.status(200).json(data);
+    responseSetter(res, 200, "Data query successful", data);
   } catch (error) {
-    console.error("Veri sorgulanırken hata oluştu:", error);
-    res.status(500).send("Veri sorgulanırken hata oluştu.");
+    console.error("Data query failed", error);
+    responseSetter(res, 500, "Data query failed", error);
   }
 }
 
 async function getID(req, res) {
-  await res.status(200).send("Response with ID");
+  const id = req.params.id;
+  const selectQuery = "SELECT * FROM barcodes WHERE id >= $1";
+  const values = [id];
+
+  try {
+    const result = await rlClient.query(selectQuery, values);
+    if (result.rowCount === 0) {
+      responseSetter(res, 404, "Data not found", null);
+    } else {
+      const data = result.rows;
+      responseSetter(res, 200, "Data query successful", data);
+    }
+  } catch (error) {
+    console.error("Data query failed", error);
+    responseSetter(res, 500, "Data query failed", error);
+  }
 }
 
 async function post(req, res) {
   const {
+    robot_id,
     scanner_id,
     date,
     time,
@@ -29,29 +45,56 @@ async function post(req, res) {
     location_z,
   } = req.body;
 
-  const insertQuery = `
-    INSERT INTO barcodes (scanner_id, date, time, barcode, location_x, location_y, location_z)
-    VALUES ($1, $2, $3, $4, $5, $6, $7)
-    RETURNING id`;
-
-  const values = [
-    scanner_id,
-    date,
-    time,
-    barcode,
-    location_x,
-    location_y,
-    location_z,
-  ];
+  const checkQuery = "SELECT * FROM barcodes WHERE barcode = $1";
+  const checkValues = [barcode];
 
   try {
-    const result = await rlClient.query(insertQuery, values);
+    const checkResult = await rlClient.query(checkQuery, checkValues);
+
+    if (checkResult.rowCount > 0) {
+      responseSetter(res, 400, "This barcode already exists", null);
+      return;
+    }
+
+    const insertQuery = `
+      INSERT INTO barcodes (scanner_id, robot_id, date, time, barcode, location_x, location_y, location_z)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING id`;
+
+    const insertValues = [
+      robot_id,
+      scanner_id,
+      date,
+      time,
+      barcode,
+      location_x,
+      location_y,
+      location_z,
+    ];
+
+    const result = await rlClient.query(insertQuery, insertValues);
     const insertedId = result.rows[0].id;
-    console.log(`Veri başarıyla eklendi. Eklenen verinin ID'si: ${insertedId}`);
-    res.status(200).send("Veri başarıyla eklendi.");
+    console.log(`Data added successfully ID: ${insertedId}`);
+
+    responseSetter(res, 201, "Data added successfully", null);
   } catch (error) {
-    console.error("Veri eklenirken hata oluştu:", error);
-    res.status(500).send("Veri eklenirken hata oluştu.");
+    console.error("Data add failed", error);
+    responseSetter(res, 500, "Data add failed", error);
+  }
+}
+
+async function reset(req, res) {
+  try {
+    const copyQuery = "INSERT INTO barcodes_log SELECT * FROM barcodes";
+    await rlClient.query(copyQuery);
+
+    const deleteQuery = "DELETE FROM barcodes";
+    await rlClient.query(deleteQuery);
+
+    responseSetter(res, 200, "Data reset successful", null);
+  } catch (error) {
+    console.error("Data reset failed", error);
+    responseSetter(res, 500, "Data reset failed", error);
   }
 }
 
@@ -59,4 +102,5 @@ module.exports = {
   get,
   getID,
   post,
+  reset,
 };

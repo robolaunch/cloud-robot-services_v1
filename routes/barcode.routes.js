@@ -8,4 +8,6 @@ router.get("/:id", barcodeServices.getID);
 
 router.post("/", barcodeServices.post);
 
+router.delete("/", barcodeServices.reset);
+
 module.exports = router;

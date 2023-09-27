@@ -41,6 +41,7 @@ async function createTables() {
     await rlClient.query(`
     CREATE TABLE barcodes (
     id SERIAL PRIMARY KEY,
+    robot_id INTEGER,
     scanner_id INTEGER,
     date DATE,
     time TIME,
@@ -53,6 +54,7 @@ async function createTables() {
     await rlClient.query(`
     CREATE TABLE barcodes_log (
     id SERIAL PRIMARY KEY,
+    robot_id INTEGER,
     scanner_id INTEGER,
     date DATE,
     time TIME,

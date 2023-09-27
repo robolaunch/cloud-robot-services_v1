@@ -7,6 +7,7 @@ const app = express();
 const appRouters = require("./routes/app.routes");
 const barcodeRouters = require("./routes/barcode.routes");
 const dbCreateFlow = require("./functions/dbCreateFlow");
+const getDataFromRobot = require("./functions/getDataFromRobot");
 
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -28,4 +29,5 @@ app.use("/barcode", barcodeRouters);
 var server = app.listen(8084, async function () {
   await console.log("Server is running on port 8084");
   await dbCreateFlow();
+  await setInterval(getDataFromRobot, 5000);
 });
