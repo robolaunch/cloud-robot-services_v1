@@ -4,19 +4,16 @@
 
 <div align="center">
   <p align="center">
-    <a href="https://github.com/robolaunch/template/releases">
-      <img src="https://img.shields.io/badge/python-3.7-blue" alt="release">
+    <a href="https://github.com/nodejs">
+      <img src="https://img.shields.io/badge/nodejs-18.17.1-dgreen" alt="node">
     </a>
-    <a href="https://github.com/robolaunch/template/releases">
-      <img src="https://img.shields.io/badge/release-v2.0.7-green" alt="release">
+    <a href="https://github.com/robolaunch/inventory-management-backend/releases">
+      <img src="https://img.shields.io/badge/release-v2.1.0-red" alt="release">
     </a>
-    <a href="https://github.com/robolaunch/template/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/robolaunch/template" alt="license">
+        <a href="#">
+      <img src="https://img.shields.io/badge/language-typescript-blue" alt="language">
     </a>
-    <a href="https://github.com/robolaunch/template/issues">
-      <img src="https://img.shields.io/github/issues/robolaunch/template" alt="issues">
-    </a>
-    <a href="https://github.com/robolaunch/template/actions">
+    <a href="https://github.com/robolaunch/inventory-management-backend/actions">
       <img src="https://img.shields.io/badge/build-passing-dgreen" alt="build">
     </a>
   </p>
@@ -32,7 +29,6 @@ robolaunch Template helps organization members to have a generic project templat
 - [Quick Start](#quick-start)
 - [Aims & Roadmap](#aims--roadmap)
 - [Contributing](#contributing)
-
 
 ## Overview
 
@@ -53,6 +49,7 @@ The aim of this project is to maintain a generic template for robolaunch project
 [EDIT THIS: Explain how starters can try the project's functionality.]
 
 After [using this project as template](https://github.com/robolaunch/template/generate), you can:
+
 - Update generic fields at README, specialize it to the project
 - Create first release to stage new features
 - Add custom workflows for CI/CD

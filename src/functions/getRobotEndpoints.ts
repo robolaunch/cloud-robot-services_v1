@@ -1,4 +1,4 @@
-function getRobotEndpoints() {
+export default function getRobotEndpoints() {
   return [
     {
       robot_id: 1,
@@ -10,5 +10,3 @@ function getRobotEndpoints() {
     },
   ];
 }
-
-module.exports = getRobotEndpoints;

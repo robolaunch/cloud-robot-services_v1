@@ -1,5 +1,5 @@
-const env = require("../providers/environmentProvider");
-const { Client } = require("pg");
+import env from "../providers/environmentProvider";
+import { Client } from "pg";
 
 const client = new Client({
   host: env.database.host,
@@ -9,4 +9,4 @@ const client = new Client({
   password: env.su.password,
 });
 
-module.exports = client;
+export default client;

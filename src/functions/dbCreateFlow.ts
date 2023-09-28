@@ -1,6 +1,6 @@
-const suClient = require("../clients/dbSuperUserClient");
-const rlClient = require("../clients/dbRobolaunchClient");
-const env = require("../providers/environmentProvider");
+import rlClient from "../clients/dbRobolaunchClient";
+import suClient from "../clients/dbSuperUserClient";
+import env from "../providers/environmentProvider";
 
 async function createSuperUser() {
   try {
@@ -15,8 +15,8 @@ async function createSuperUser() {
     CONNECTION LIMIT -1
     PASSWORD '${env.rl.password}';`);
     console.log("CREATED robolaunch superuser");
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    console.log(err?.code === "42710" ? "Superuser already exists" : err);
   }
 }
 
@@ -31,8 +31,8 @@ async function createDatabase() {
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;`);
     console.log(`CREATED ${env.rl.name} database`);
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    console.log(err?.code === "42P04" ? "Database already exists" : err);
   }
 }
 
@@ -63,12 +63,12 @@ async function createTables() {
     location_y FLOAT,
     location_z FLOAT)`);
     console.log("CREATED barcodes_log table");
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    console.log(err.code === "42P07" ? "Tables already exists" : err);
   }
 }
 
-async function creatorFlow() {
+export default async function creatorFlow() {
   await suClient.connect();
   await createSuperUser();
   await createDatabase();
@@ -76,5 +76,3 @@ async function creatorFlow() {
   await rlClient.connect();
   await createTables();
 }
-
-module.exports = creatorFlow;

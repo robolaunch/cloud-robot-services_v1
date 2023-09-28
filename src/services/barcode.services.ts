@@ -1,7 +1,7 @@
-const rlClient = require("../clients/dbRobolaunchClient");
-const responseSetter = require("../functions/responseSetter");
+import responseSetter from "../functions/responseSetter";
+import rlClient from "../clients/dbRobolaunchClient";
 
-async function get(_, res) {
+async function get(req: any, res: any) {
   const selectQuery = "SELECT * FROM barcodes";
 
   try {
@@ -9,12 +9,12 @@ async function get(_, res) {
     const data = result.rows;
     responseSetter(res, 200, "Data query successful", data);
   } catch (error) {
-    console.error("Data query failed", error);
+    console.log("Data query failed", error);
     responseSetter(res, 500, "Data query failed", error);
   }
 }
 
-async function getID(req, res) {
+async function getID(req: any, res: any) {
   const id = req.params.id;
   const selectQuery = "SELECT * FROM barcodes WHERE id >= $1";
   const values = [id];
@@ -28,12 +28,12 @@ async function getID(req, res) {
       responseSetter(res, 200, "Data query successful", data);
     }
   } catch (error) {
-    console.error("Data query failed", error);
+    console.log("Data query failed", error);
     responseSetter(res, 500, "Data query failed", error);
   }
 }
 
-async function post(req, res) {
+async function post(req: any, res: any) {
   const {
     robot_id,
     scanner_id,
@@ -78,12 +78,12 @@ async function post(req, res) {
 
     responseSetter(res, 201, "Data added successfully", null);
   } catch (error) {
-    console.error("Data add failed", error);
+    console.log("Data add failed", error);
     responseSetter(res, 500, "Data add failed", error);
   }
 }
 
-async function reset(req, res) {
+async function reset(req: any, res: any) {
   try {
     const copyQuery = "INSERT INTO barcodes_log SELECT * FROM barcodes";
     await rlClient.query(copyQuery);
@@ -93,12 +93,12 @@ async function reset(req, res) {
 
     responseSetter(res, 200, "Data reset successful", null);
   } catch (error) {
-    console.error("Data reset failed", error);
+    console.log("Data reset failed", error);
     responseSetter(res, 500, "Data reset failed", error);
   }
 }
 
-module.exports = {
+export default {
   get,
   getID,
   post,

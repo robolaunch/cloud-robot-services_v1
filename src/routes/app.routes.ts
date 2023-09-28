@@ -1,8 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const responseSetter = require("../functions/responseSetter");
+import express from "express";
+import responseSetter from "../functions/responseSetter";
 
-router.get("/", (req, res) => {
+const router = express.Router();
+
+router.get("/", (_req, res) => {
   responseSetter(
     res,
     200,
@@ -11,4 +12,4 @@ router.get("/", (req, res) => {
   );
 });
 
-module.exports = router;
+export default router;

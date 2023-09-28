@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
+import barcodeServices from "../services/barcode.services";
 const router = express.Router();
-const barcodeServices = require("../services/barcode.services");
 
 router.get("/", barcodeServices.get);
 
@@ -10,4 +10,4 @@ router.post("/", barcodeServices.post);
 
 router.delete("/", barcodeServices.reset);
 
-module.exports = router;
+export default router;

@@ -1,9 +1,9 @@
-const axios = require("axios");
-const rlClient = require("../clients/dbRobolaunchClient");
-const getRobotEndpoints = require("../functions/getRobotEndpoints");
-const getAvaliableFiles = require("../functions/getAvaliableFiles");
+import axios from "axios";
+import rlClient from "../clients/dbRobolaunchClient";
+import getRobotEndpoints from "./getRobotEndpoints";
+import getAvaliableFiles from "./getAvaliableFiles";
 
-async function getDataFromRobot() {
+export default async function getDataFromRobot() {
   console.log("Starting data collection from all robots");
   for (const robot of getRobotEndpoints()) {
     console.log(`Collecting data from robot ${robot.robot_id}`);
@@ -26,17 +26,15 @@ async function getDataFromRobot() {
         for (const fileData of fileDatas) {
           try {
             await axios.post("http://127.0.0.1:8084/barcode", fileData);
-          } catch (error) {
-            console.error(error.response?.data?.message);
+          } catch (error: any) {
+            console.log(error.response?.data?.message);
           }
         }
       }
     } catch (error) {
-      console.error(`Robot ${robot.robot_id} unreachable`);
+      console.log(`Robot ${robot.robot_id} unreachable`);
     }
     console.log(`Data collection from robot ${robot.robot_id} complete`);
   }
   console.log("Data collection from all robots complete");
 }
-
-module.exports = getDataFromRobot;
