@@ -14,14 +14,10 @@ async function createSuperUser() {
     NOREPLICATION
     CONNECTION LIMIT -1
     PASSWORD '${env.rl.password}';`);
-    console.log(
-      "POSTGRE DB | --------- | Status: Created robolaunch superuser"
-    );
+    console.log("[POSTGRE DB] Created robolaunch superuser");
   } catch (err: any) {
     console.log(
-      err?.code === "42710"
-        ? "POSTGRE DB | --------- | Status: Superuser already exists"
-        : err
+      err?.code === "42710" ? "[POSTGRE DB] Superuser already exists" : err
     );
   }
 }
@@ -36,14 +32,10 @@ async function createDatabase() {
     LOCALE_PROVIDER = 'libc'
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;`);
-    console.log(
-      `POSTGRE DB | --------- | Status: Created ${env.rl.name} database`
-    );
+    console.log(`[POSTGRE DB] Created ${env.rl.name} database`);
   } catch (err: any) {
     console.log(
-      err?.code === "42P04"
-        ? "POSTGRE DB | --------- | Status: Database already exists"
-        : err
+      err?.code === "42P04" ? "[POSTGRE DB] Database already exists" : err
     );
   }
 }
@@ -61,7 +53,7 @@ async function createTables() {
     location_x FLOAT,
     location_y FLOAT,
     location_z FLOAT)`);
-    console.log("POSTGRE DB | --------- | Status: Created `barcodes` table");
+    console.log("[POSTGRE DB] Created `barcodes` table");
 
     await rlClient.query(`
     CREATE TABLE barcodes_log (
@@ -74,14 +66,10 @@ async function createTables() {
     location_x FLOAT,
     location_y FLOAT,
     location_z FLOAT)`);
-    console.log(
-      "POSTGRE DB | --------- | Status: Created `barcodes_log` table"
-    );
+    console.log("[POSTGRE DB] Created `barcodes_log` table");
   } catch (err: any) {
     console.log(
-      err.code === "42P07"
-        ? "POSTGRE DB | --------- | Status: Tables already exists"
-        : err
+      err.code === "42P07" ? "[POSTGRE DB] Tables already exists" : err
     );
   }
 }

@@ -1,1 +1,3 @@
-export default function logSetter() {}
+export default function logSetter() {
+  //
+}

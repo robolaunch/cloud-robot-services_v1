@@ -3,10 +3,10 @@
   "version": "2.1.1",
   "description": "inventory-management-backend",
   "main": "./src/index.ts",
-  "scripts": {
-    "start": "node dist/index.ts",
-    "dev": "nodemon src/index.ts",
-    "build": "tsc"
+ "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
   "repository": {
     "type": "git",
@@ -24,16 +24,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "nodemon": "^3.0.1",
-    "pg": "^8.11.3",
-    "prettier": "^3.0.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
     "@types/node": "^20.7.1",
-    "@types/pg": "^8.10.3"
+    "@types/pg": "^8.10.3",
+    "concurrently": "^8.2.1",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
   }
 }

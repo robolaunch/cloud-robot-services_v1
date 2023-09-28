@@ -27,9 +27,7 @@ app.use("/", appRouters);
 app.use("/barcode", barcodeRouters);
 
 const server = app.listen(8084, async function () {
-  await console.log(
-    "Express BE | --------- | Status: Server is running on port 8084"
-  );
+  await console.log("[Express Backend] Server is running on port 8084");
   await dbCreateFlow();
   await setInterval(getDataFromRobot, 5000);
 });

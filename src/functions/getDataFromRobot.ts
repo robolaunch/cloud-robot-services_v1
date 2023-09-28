@@ -4,12 +4,10 @@ import getAvaliableFiles from "./getAvaliableFiles";
 import axios from "axios";
 
 export default async function getDataFromRobot() {
-  console.log(
-    "Robot Data | --------- | Status: Starting data collection from all robots"
-  );
+  console.log("[Job] Starting data collection from all robots");
   for (const robot of getRobotEndpoints()) {
     console.log(
-      `RobotID: ${robot.robot_id} | --------- | Status: Collecting data from robot ${robot.robot_id}`
+      `[RobotID:${robot.robot_id}] Collecting data from robot ${robot.robot_id}`
     );
     try {
       const [apacheRes, dbRes] = await Promise.all([
@@ -32,19 +30,17 @@ export default async function getDataFromRobot() {
             await axios.post("http://127.0.0.1:8084/barcode", fileData);
           } catch (error: any) {
             console.log(
-              `RobotID: ${robot.robot_id} | FileID: ${fileIndex} | Status: ${error.response?.data?.message}`
+              `[RobotID:${robot.robot_id} FileID:${fileIndex}] ${error.response?.data?.message}`
             );
           }
         }
       }
     } catch (error) {
-      console.log(`Robot ${robot.robot_id} unreachable`);
+      console.log(`[ERROR] Robot ${robot.robot_id} unreachable`);
     }
     console.log(
-      `RobotID: ${robot.robot_id} | --------- | Status: Data collection from robot ${robot.robot_id} complete`
+      `[RobotID:${robot.robot_id}] Data collection from robot ${robot.robot_id} complete`
     );
   }
-  console.log(
-    "Robot Data | --------- | Status: Data collection from all robots complete"
-  );
+  console.log("[Job] Data collection from all robots complete");
 }
