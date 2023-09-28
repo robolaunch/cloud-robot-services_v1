@@ -1,7 +1,7 @@
 const rlClient = require("../clients/dbRobolaunchClient");
 const responseSetter = require("../functions/responseSetter");
 
-async function get(req, res) {
+async function get(_, res) {
   const selectQuery = "SELECT * FROM barcodes";
 
   try {
@@ -52,12 +52,12 @@ async function post(req, res) {
     const checkResult = await rlClient.query(checkQuery, checkValues);
 
     if (checkResult.rowCount > 0) {
-      responseSetter(res, 400, "This barcode already exists", null);
+      responseSetter(res, 400, `This barcode ${barcode} already exists`, null);
       return;
     }
 
     const insertQuery = `
-      INSERT INTO barcodes (scanner_id, robot_id, date, time, barcode, location_x, location_y, location_z)
+      INSERT INTO barcodes (robot_id, scanner_id, date, time, barcode, location_x, location_y, location_z)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id`;
 
