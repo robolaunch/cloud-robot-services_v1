@@ -1,30 +1,13 @@
 import getDataFromRobot from "./functions/getDataFromRobot";
+import { Request, Response, NextFunction } from "express";
 import barcodeRouters from "./routes/barcode.routes";
 import dbCreateFlow from "./functions/dbCreateFlow";
 import appRouters from "./routes/app.routes";
 import bodyParser from "body-parser";
 import express from "express";
-import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 
 const app = express();
-
-app.all("/*", function (req: Request, res: Response, next: NextFunction) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
-
-app.use(
-  bodyParser.json(),
-  cors({
-    origin: "*",
-  })
-);
-
-app.use("/", appRouters);
-
-app.use("/barcode", barcodeRouters);
 
 app.all("/*", function (req: Request, res: Response, next: NextFunction) {
   res.header("Access-Control-Allow-Origin", "*");

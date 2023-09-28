@@ -1,24 +1,11 @@
-require("dotenv").config();
+import { IEnvrionment } from "../interfaces/interfaces";
+import dotenv from "dotenv";
+dotenv.config();
 
-const env: {
-  database: {
-    host: string;
-    port: number;
-  };
-  su: {
-    name: string;
-    user: string;
-    password: string;
-  };
-  rl: {
-    name: string;
-    user: string;
-    password: string;
-  };
-} = {
+const env: IEnvrionment = {
   database: {
     host: process.env.DATABASE_HOST!,
-    port: Number(process.env.DATABASE_PORT!),
+    port: parseInt(process.env.DATABASE_PORT!),
   },
   su: {
     name: process.env.DATABASE_SU_NAME!,

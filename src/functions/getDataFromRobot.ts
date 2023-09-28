@@ -1,7 +1,7 @@
-import axios from "axios";
 import rlClient from "../clients/dbRobolaunchClient";
 import getRobotEndpoints from "./getRobotEndpoints";
 import getAvaliableFiles from "./getAvaliableFiles";
+import axios from "axios";
 
 export default async function getDataFromRobot() {
   console.log("Starting data collection from all robots");
@@ -27,7 +27,9 @@ export default async function getDataFromRobot() {
           try {
             await axios.post("http://127.0.0.1:8084/barcode", fileData);
           } catch (error: any) {
-            console.log(error.response?.data?.message);
+            console.log(
+              `RobotID: ${robot.robot_id} | FileID: ${fileIndex} | Status: ${error.response?.data?.message}`
+            );
           }
         }
       }

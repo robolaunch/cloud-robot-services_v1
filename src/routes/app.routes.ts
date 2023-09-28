@@ -1,5 +1,5 @@
-import express from "express";
 import responseSetter from "../functions/responseSetter";
+import express from "express";
 
 const router = express.Router();
 

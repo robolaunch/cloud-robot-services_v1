@@ -68,7 +68,7 @@ async function createTables() {
   }
 }
 
-export default async function creatorFlow() {
+export default async function dbCreateFlow() {
   await suClient.connect();
   await createSuperUser();
   await createDatabase();
