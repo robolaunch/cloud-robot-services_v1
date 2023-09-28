@@ -4,9 +4,13 @@ import getAvaliableFiles from "./getAvaliableFiles";
 import axios from "axios";
 
 export default async function getDataFromRobot() {
-  console.log("Starting data collection from all robots");
+  console.log(
+    "Robot Data | --------- | Status: Starting data collection from all robots"
+  );
   for (const robot of getRobotEndpoints()) {
-    console.log(`Collecting data from robot ${robot.robot_id}`);
+    console.log(
+      `RobotID: ${robot.robot_id} | --------- | Status: Collecting data from robot ${robot.robot_id}`
+    );
     try {
       const [apacheRes, dbRes] = await Promise.all([
         axios.get(robot.endpoint),
@@ -36,7 +40,11 @@ export default async function getDataFromRobot() {
     } catch (error) {
       console.log(`Robot ${robot.robot_id} unreachable`);
     }
-    console.log(`Data collection from robot ${robot.robot_id} complete`);
+    console.log(
+      `RobotID: ${robot.robot_id} | --------- | Status: Data collection from robot ${robot.robot_id} complete`
+    );
   }
-  console.log("Data collection from all robots complete");
+  console.log(
+    "Robot Data | --------- | Status: Data collection from all robots complete"
+  );
 }

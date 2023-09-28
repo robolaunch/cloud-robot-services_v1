@@ -1,6 +1,6 @@
 {
   "name": "inventory-management-backend",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "inventory-management-backend",
   "main": "./src/index.ts",
   "scripts": {
