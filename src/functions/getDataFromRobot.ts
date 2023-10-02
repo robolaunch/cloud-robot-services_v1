@@ -11,7 +11,8 @@ export default async function getDataFromRobot() {
     );
     try {
       const [apacheRes, dbRes] = await Promise.all([
-        axios.get(robot.endpoint),
+        console.log(robot.endpoint + "/barcode/"),
+        axios.get(robot.endpoint + "/barcode/"),
         rlClient.query(
           `SELECT COUNT(*) FROM barcodes WHERE robot_id = ${robot.robot_id}`
         ),

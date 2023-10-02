@@ -6,6 +6,7 @@ import appRouters from "./routes/app.routes";
 import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
+import waypointRouters from "./routes/waypoint.routes";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(
 app.use("/", appRouters);
 
 app.use("/barcode", barcodeRouters);
+
+app.use("/waypoint", waypointRouters);
 
 const server = app.listen(8084, async function () {
   await console.log("[Express Backend] Server is running on port 8084");
