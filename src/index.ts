@@ -1,4 +1,4 @@
-import getDataFromRobot from "./functions/getDataFromRobot";
+import getBarcodeFromRobot from "./functions/getBarcodeFromRobot";
 import { Request, Response, NextFunction } from "express";
 import barcodeRouters from "./routes/barcode.routes";
 import dbCreateFlow from "./functions/dbCreateFlow";
@@ -32,5 +32,5 @@ app.use("/waypoint", waypointRouters);
 const server = app.listen(8084, async function () {
   await console.log("[Express Backend] Server is running on port 8084");
   await dbCreateFlow();
-  await setInterval(getDataFromRobot, 5000);
+  await setInterval(getBarcodeFromRobot, 5000);
 });

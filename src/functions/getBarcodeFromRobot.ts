@@ -3,16 +3,16 @@ import getRobotEndpoints from "./getRobotEndpoints";
 import getAvaliableFiles from "./getAvaliableFiles";
 import axios from "axios";
 
-export default async function getDataFromRobot() {
-  console.log("[Job] Starting data collection from all robots");
+export default async function getBarcodeFromRobot() {
+  console.log("[Barcode Job] Starting barcode collection from all robots");
   for (const robot of getRobotEndpoints()) {
     console.log(
-      `[RobotID:${robot.robot_id}] Collecting data from robot ${robot.robot_id}`
+      `[RobotID:${robot.robot_id}] Collecting barcode from robot ${robot.robot_id}`
     );
     try {
       const [apacheRes, dbRes] = await Promise.all([
-        console.log(robot.endpoint + "/barcode/"),
         axios.get(robot.endpoint + "/barcode/"),
+
         rlClient.query(
           `SELECT COUNT(*) FROM barcodes WHERE robot_id = ${robot.robot_id}`
         ),
@@ -21,7 +21,9 @@ export default async function getDataFromRobot() {
       const availableFiles = getAvaliableFiles(dbRes, apacheRes);
 
       for (const fileIndex of availableFiles) {
-        const response = await axios.get(`${robot.endpoint}/${fileIndex}.txt`);
+        const response = await axios.get(
+          `${robot.endpoint}/barcode/${fileIndex}.txt`
+        );
         const fileDatas = JSON.parse(
           `[${response?.data?.trim()?.slice(0, -1)}]`
         );
@@ -40,8 +42,8 @@ export default async function getDataFromRobot() {
       console.log(`[ERROR] Robot ${robot.robot_id} unreachable`);
     }
     console.log(
-      `[RobotID:${robot.robot_id}] Data collection from robot ${robot.robot_id} complete`
+      `[RobotID:${robot.robot_id}] Barcode collection from robot ${robot.robot_id} complete`
     );
   }
-  console.log("[Job] Data collection from all robots complete");
+  console.log("[Barcode Job] Barcode collection from all robots complete");
 }
