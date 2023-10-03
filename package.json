@@ -1,9 +1,9 @@
 {
   "name": "inventory-management-backend",
-  "version": "2.1.1",
+  "version": "0.1.2",
   "description": "inventory-management-backend",
   "main": "./src/index.ts",
- "scripts": {
+  "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""

@@ -8,7 +8,7 @@
       <img src="https://img.shields.io/badge/nodejs-18.17.1-dgreen" alt="node">
     </a>
     <a href="https://github.com/robolaunch/inventory-management-backend/releases">
-      <img src="https://img.shields.io/badge/release-v2.1.1-red" alt="release">
+      <img src="https://img.shields.io/badge/release-v0.1.2-red" alt="release">
     </a>
         <a href="#">
       <img src="https://img.shields.io/badge/language-typescript-blue" alt="language">
