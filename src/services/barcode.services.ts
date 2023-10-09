@@ -2,17 +2,16 @@ import responseSetter from "../functions/responseSetter";
 import rlClient from "../clients/dbRobolaunchClient";
 
 async function get(req: any, res: any) {
-  const selectQuery = "SELECT * FROM barcodes";
-
   try {
-    const result = await rlClient.query(selectQuery);
-    const data = result.rows;
+    const { rows: data } = await rlClient.query("SELECT * FROM barcodes");
     responseSetter(res, 200, "Data query successful", data);
   } catch (error) {
-    console.log("Data query failed", error);
     responseSetter(res, 500, "Data query failed", error);
   }
 }
+
+//
+//
 
 async function getID(req: any, res: any) {
   const id = req.params.id;
@@ -33,63 +32,40 @@ async function getID(req: any, res: any) {
   }
 }
 
-async function post(req: any, res: any) {
-  const {
-    robot_id,
-    scanner_id,
-    date,
-    time,
-    barcode,
-    location_x,
-    location_y,
-    location_z,
-  } = req.body;
+//
+//
 
-  const checkQuery = "SELECT * FROM barcodes WHERE barcode = $1";
-  const checkValues = [barcode];
+async function post(req: any, res: any) {
+  const { scanner_id, time, barcode, location_x, location_y, location_z } =
+    req.body;
 
   try {
-    const checkResult = await rlClient.query(checkQuery, checkValues);
+    const { rows: data } = await rlClient.query(
+      "SELECT * FROM barcodes WHERE barcode = $1",
+      [barcode]
+    );
 
-    if (checkResult.rowCount > 0) {
-      responseSetter(res, 400, `This barcode ${barcode} already exists`, null);
+    if (data.length > 0) {
+      responseSetter(res, 400, `This barcode "${barcode}" already exists`);
       return;
     }
 
-    const insertQuery = `
-      INSERT INTO barcodes (robot_id, scanner_id, date, time, barcode, location_x, location_y, location_z)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-      RETURNING id`;
+    await rlClient.query(
+      "INSERT INTO barcodes (scanner_id, time, barcode, location_x, location_y, location_z) VALUES ($1, $2, $3, $4, $5, $6)",
+      [scanner_id, time, barcode, location_x, location_y, location_z]
+    );
 
-    const insertValues = [
-      robot_id,
-      scanner_id,
-      date,
-      time,
-      barcode,
-      location_x,
-      location_y,
-      location_z,
-    ];
-
-    const result = await rlClient.query(insertQuery, insertValues);
-    const insertedId = result.rows[0].id;
-    console.log(`Data added successfully ID: ${insertedId}`);
-
-    responseSetter(res, 201, "Data added successfully", null);
+    responseSetter(res, 200, "Data added successfully");
   } catch (error) {
-    console.log("Data add failed", error);
     responseSetter(res, 500, "Data add failed", error);
   }
 }
 
 async function reset(req: any, res: any) {
   try {
-    const copyQuery = "INSERT INTO barcodes_log SELECT * FROM barcodes";
-    await rlClient.query(copyQuery);
+    await rlClient.query("INSERT INTO barcodes_log SELECT * FROM barcodes");
 
-    const deleteQuery = "DELETE FROM barcodes";
-    await rlClient.query(deleteQuery);
+    await rlClient.query("DELETE FROM barcodes");
 
     responseSetter(res, 200, "Data reset successful", null);
   } catch (error) {

@@ -1,12 +1,12 @@
-import getBarcodeFromRobot from "./functions/getBarcodeFromRobot";
 import { Request, Response, NextFunction } from "express";
 import barcodeRouters from "./routes/barcode.routes";
-import dbCreateFlow from "./functions/dbCreateFlow";
+import dbCreateFlow from "./functions/createDatabaseFlow";
 import appRouters from "./routes/app.routes";
 import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
 import waypointRouters from "./routes/waypoint.routes";
+import getDataFromRobot from "./functions/getDatafromRobot";
 
 const app = express();
 
@@ -29,8 +29,8 @@ app.use("/barcode", barcodeRouters);
 
 app.use("/waypoint", waypointRouters);
 
-const server = app.listen(8084, async function () {
-  await console.log("[Express Backend] Server is running on port 8084");
+app.listen(8090, async function () {
+  await console.log("[Express Backend] Server is running on port 8090");
   await dbCreateFlow();
-  await setInterval(getBarcodeFromRobot, 5000);
+  await getDataFromRobot();
 });
