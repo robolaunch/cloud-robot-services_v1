@@ -1,7 +1,7 @@
 {
-  "name": "inventory-management-backend",
-  "version": "0.1.2",
-  "description": "inventory-management-backend",
+  "name": "cloud-robot-services",
+  "version": "0.2.3",
+  "description": "cloud-robot-services",
   "main": "./src/index.ts",
   "scripts": {
     "build": "npx tsc",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robolaunch/inventory-management-backend.git"
+    "url": "git+https://github.com/robolaunch/cloud-robot-services.git"
   },
   "author": "gokhangunduz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/robolaunch/inventory-management-backend/issues"
+    "url": "https://github.com/robolaunch/cloud-robot-services/issues"
   },
-  "homepage": "https://github.com/robolaunch/inventory-management-backend#readme",
+  "homepage": "https://github.com/robolaunch/cloud-robot-services#readme",
   "dependencies": {
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",

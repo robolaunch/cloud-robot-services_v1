@@ -5,7 +5,7 @@ export default function setResponse(
   data?: any
 ) {
   console.log(
-    `[${response.req.method} ${status} - ${response.req.baseUrl}] ${message}`
+    `[${response.req.method} ${status} - "${response.req.originalUrl}"] ${message}`
   );
   response.status(status).json({
     success: status < 300 ? true : false,
