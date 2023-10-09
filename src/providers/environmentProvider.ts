@@ -17,6 +17,9 @@ const env: IEnvrionment = {
     user: process.env.DATABASE_RL_USER!,
     password: process.env.DATABASE_RL_PASSWORD!,
   },
+  application: {
+    port: parseInt(process.env.APPLICATION_PORT!),
+  },
 };
 
 export default env;

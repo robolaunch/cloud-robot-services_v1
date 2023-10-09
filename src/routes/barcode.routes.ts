@@ -4,10 +4,10 @@ const router = express.Router();
 
 router.get("/", barcodeServices.get);
 
-router.get("/:id", barcodeServices.getID);
+router.get("/:time", barcodeServices.getWithTime);
 
 router.post("/", barcodeServices.post);
 
-router.delete("/", barcodeServices.reset);
+router.delete("/", barcodeServices.remove);
 
 export default router;

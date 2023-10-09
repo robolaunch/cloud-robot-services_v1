@@ -1,52 +1,48 @@
-import responseSetter from "../functions/responseSetter";
+import setResponse from "../helper/setResponse";
 import rlClient from "../clients/dbRobolaunchClient";
+import getRobot from "../functions/getRobot";
+import axios from "axios";
 
 async function get(req: any, res: any) {
   try {
     const { rows: data } = await rlClient.query("SELECT * FROM barcodes");
-    responseSetter(res, 200, "Data query successful", data);
+    setResponse(res, 200, "Data query successful", data);
   } catch (error) {
-    responseSetter(res, 500, "Data query failed", error);
+    setResponse(res, 500, "Data query failed", error);
   }
 }
 
-//
-//
+async function getWithTime(req: any, res: any) {
+  const values = [req.params.time];
 
-async function getID(req: any, res: any) {
-  const id = req.params.id;
-  const selectQuery = "SELECT * FROM barcodes WHERE id >= $1";
-  const values = [id];
+  const selectQuery = "SELECT * FROM barcodes WHERE time >= $1";
 
   try {
     const result = await rlClient.query(selectQuery, values);
+
     if (result.rowCount === 0) {
-      responseSetter(res, 404, "Data not found", null);
-    } else {
-      const data = result.rows;
-      responseSetter(res, 200, "Data query successful", data);
+      setResponse(res, 404, "Data not found", null);
+      return;
     }
+
+    setResponse(res, 200, "Data query successful", result.rows);
   } catch (error) {
-    console.log("Data query failed", error);
-    responseSetter(res, 500, "Data query failed", error);
+    setResponse(res, 500, "Data query failed", error);
   }
 }
 
-//
-//
-
 async function post(req: any, res: any) {
-  const { scanner_id, time, barcode, location_x, location_y, location_z } =
-    req.body;
-
   try {
-    const { rows: data } = await rlClient.query(
+    const { scanner_id, time, barcode, location_x, location_y, location_z } =
+      req.body;
+
+    const { rows: existingData } = await rlClient.query(
       "SELECT * FROM barcodes WHERE barcode = $1",
       [barcode]
     );
 
-    if (data.length > 0) {
-      responseSetter(res, 400, `This barcode "${barcode}" already exists`);
+    if (existingData.length > 0) {
+      setResponse(res, 400, `This barcode "${barcode}" already exists`);
       return;
     }
 
@@ -55,28 +51,29 @@ async function post(req: any, res: any) {
       [scanner_id, time, barcode, location_x, location_y, location_z]
     );
 
-    responseSetter(res, 200, "Data added successfully");
+    setResponse(res, 200, "Data added successfully");
   } catch (error) {
-    responseSetter(res, 500, "Data add failed", error);
+    setResponse(res, 500, "Data add failed", error);
   }
 }
 
-async function reset(req: any, res: any) {
+async function remove(req: any, res: any) {
   try {
-    await rlClient.query("INSERT INTO barcodes_log SELECT * FROM barcodes");
+    const { data } = await axios.delete(`${getRobot().endpoint}/barcode`);
 
-    await rlClient.query("DELETE FROM barcodes");
-
-    responseSetter(res, 200, "Data reset successful", null);
+    if (data.success) {
+      rlClient.query("INSERT INTO barcodes_log SELECT * FROM barcodes");
+      rlClient.query("DELETE FROM barcodes");
+      setResponse(res, 200, "All data moved to barcodes_log successfully.");
+    }
   } catch (error) {
-    console.log("Data reset failed", error);
-    responseSetter(res, 500, "Data reset failed", error);
+    setResponse(res, 500, "Error while moving data to barcodes_log.");
   }
 }
 
 export default {
   get,
-  getID,
+  getWithTime,
   post,
-  reset,
+  remove,
 };

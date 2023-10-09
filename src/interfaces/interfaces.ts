@@ -13,4 +13,7 @@ export interface IEnvrionment {
     user: string;
     password: string;
   };
+  application: {
+    port: number;
+  };
 }

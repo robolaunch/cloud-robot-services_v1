@@ -5,32 +5,36 @@ import appRouters from "./routes/app.routes";
 import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
-import waypointRouters from "./routes/waypoint.routes";
 import getDataFromRobot from "./functions/getDatafromRobot";
+import env from "./providers/environmentProvider";
 
-const app = express();
+function main() {
+  const app = express();
 
-app.all("/*", function (req: Request, res: Response, next: NextFunction) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
+  app.all("/*", function (req: Request, res: Response, next: NextFunction) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+  });
 
-app.use(
-  bodyParser.json(),
-  cors({
-    origin: "*",
-  })
-);
+  app.use(
+    bodyParser.json(),
+    cors({
+      origin: "*",
+    })
+  );
 
-app.use("/", appRouters);
+  app.use("/", appRouters);
 
-app.use("/barcode", barcodeRouters);
+  app.use("/barcode", barcodeRouters);
 
-app.use("/waypoint", waypointRouters);
+  app.listen(env.application.port, async function () {
+    await dbCreateFlow();
+    await setInterval(async () => getDataFromRobot(), 5000);
+    await console.log(
+      `[Cloud Robot Services] Service is running on port ${env.application.port}`
+    );
+  });
+}
 
-app.listen(8090, async function () {
-  await console.log("[Express Backend] Server is running on port 8090");
-  await dbCreateFlow();
-  await getDataFromRobot();
-});
+main();

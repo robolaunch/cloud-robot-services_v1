@@ -69,10 +69,15 @@ async function createTables() {
 }
 
 export default async function dbCreateFlow() {
-  await suClient.connect();
-  await createSuperUser();
-  await createDatabase();
-  await suClient.end();
-  await rlClient.connect();
-  await createTables();
+  try {
+    await suClient.connect();
+    await createSuperUser();
+    await createDatabase();
+    await suClient.end();
+    await rlClient.connect();
+    await createTables();
+  } catch (error) {
+    console.log("[POSTGRE DB] Error connecting/creating database");
+    throw error;
+  }
 }

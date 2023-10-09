@@ -1,4 +1,4 @@
-export default function responseSetter(
+export default function setResponse(
   response: any,
   status: number,
   message: string,
