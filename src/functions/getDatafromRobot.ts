@@ -23,7 +23,7 @@ export default async function getDataFromRobot() {
       await PostDataPostgre(response);
     }
   } catch (error) {
-    console.log("[POSTGRE DB] Error while getting data from robot ");
+    console.log("[GetDataFromRobot] Error while getting data from robot ");
   }
 }
 
@@ -42,4 +42,10 @@ async function PostDataPostgre(response: any) {
   });
 
   await Promise.all(promises);
+
+  console.log(
+    response.length
+      ? "[GetDataFromRobot] Data added successfully"
+      : "[GetDataFromRobot] No new data"
+  );
 }

@@ -16,4 +16,7 @@ export interface IEnvrionment {
   application: {
     port: number;
   };
+  robot: {
+    port: number;
+  };
 }

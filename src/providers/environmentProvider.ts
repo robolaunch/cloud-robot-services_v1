@@ -20,6 +20,9 @@ const env: IEnvrionment = {
   application: {
     port: parseInt(process.env.APPLICATION_PORT!),
   },
+  robot: {
+    port: parseInt(process.env.ROBOT_PORT!),
+  },
 };
 
 export default env;

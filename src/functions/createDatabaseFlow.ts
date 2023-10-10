@@ -46,7 +46,7 @@ async function createTables() {
     CREATE TABLE barcodes (
     scanner_id INTEGER,
     time INTEGER,
-    barcode VARCHAR(255),
+    barcode TEXT,
     location_x FLOAT,
     location_y FLOAT,
     location_z FLOAT)`);
@@ -56,11 +56,29 @@ async function createTables() {
     CREATE TABLE barcodes_log (
     scanner_id INTEGER,
     time INTEGER,
-    barcode VARCHAR(255),
+    barcode TEXT,
     location_x FLOAT,
     location_y FLOAT,
     location_z FLOAT)`);
     console.log("[POSTGRE DB] Created `barcodes_log` table");
+
+    await rlClient.query(`
+  CREATE TABLE tasks (
+    task_id TEXT,
+    task_name TEXT,
+    task_json TEXT
+  )
+`);
+    console.log("[POSTGRE DB] Created `tasks` table");
+
+    await rlClient.query(`
+  CREATE TABLE tasks_log (
+    time TEXT,
+    method TEXT,
+    log TEXT
+  )
+`);
+    console.log("[POSTGRE DB] Created `tasks_log` table");
   } catch (err: any) {
     console.log(
       err.code === "42P07" ? "[POSTGRE DB] Tables already exists" : err
